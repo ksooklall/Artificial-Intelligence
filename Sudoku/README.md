@@ -3,11 +3,11 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: The twins are the constraint and their position in a unit (row, col,or  square) causes all values in that unit to be replaced with each digit of a twin. The process of replacing is the twin propagating.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: The left and right diagonals are another set of constraints that further all for certain values to propagate in more than just rows cols and squares.
 
 ### Install
 
