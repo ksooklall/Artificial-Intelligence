@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-import argparse
-import shutil
-import os
-from udacity_pa import udacity
-
-nanodegree = 'nd889'
-projects = ['sudoku']
-
-def submit(args):
-  filenames = ['solution.py', 'README.md']
-
-  udacity.submit(nanodegree, projects[0], filenames, 
-                 environment = args.environment,
-                 jwt_path = args.jwt_path)
-=======
 import os
 
 from udacity_pa import udacity
@@ -45,10 +29,8 @@ projects = list(SETTINGS.keys())
 
 RESUBMIT_MSG = """
 NOTICE:
-
   You are about to submit your agent.  If you have previously submitted
   your agent, continuing will replace that submission.
-
 """
 
 
@@ -112,4 +94,3 @@ def submit(options):
                    filenames, 
                    environment = options.environment,
                    max_zip_size=max_size)
->>>>>>> 3303502c33008174bf1add2e5c50b58d464da8ba
