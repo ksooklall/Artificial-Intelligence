@@ -34,7 +34,6 @@ class TestAirCargoProb2(unittest.TestCase):
     def test_ACP2_num_requirements(self):
         self.assertEqual(len(self.p2.goal),3)
 
-
 class TestAirCargoProb3(unittest.TestCase):
 
     def setUp(self):
