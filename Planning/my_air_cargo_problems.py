@@ -1,13 +1,10 @@
+from aimacode.utils import expr
 from aimacode.logic import PropKB
 from aimacode.planning import Action
-from aimacode.search import (
-    Node, Problem,
-)
-from aimacode.utils import expr
-from lp_utils import (
-    FluentState, encode_state, decode_state,
-)
+from aimacode.search import Node, Problem
+
 from my_planning_graph import PlanningGraph
+from lp_utils import FluentState, encode_state, decode_state
 
 from functools import lru_cache
 
@@ -15,7 +12,6 @@ from functools import lru_cache
 class AirCargoProblem(Problem):
     def __init__(self, cargos, planes, airports, initial: FluentState, goal: list):
         """
-
         :param cargos: list of str
             cargos in the problem
         :param planes: list of str
@@ -61,15 +57,15 @@ class AirCargoProblem(Problem):
             for airport in self.airports:
                 for plane in self.planes:
                     for cargo in self.cargos:
-                        precond_pos = [expr('At({}, {})'.format(cargo, plane))] \
+                        precond_pos = [expr('At({}, {})'.format(cargo, airport))] \
                                      + [expr('At({}, {})'.format(plane, airport))]
                         precond_neg = []
                         effect_add = [expr('In({}, {})'.format(cargo, plane))]
                         effect_rem = [expr('At({}, {})'.format(cargo, airport))]
 
                         load = Action(expr('Load({}, {}, {})'.format(cargo, plane, airport)),
-                                       [precond_pos, precond_neg],
-                                       [effect_add, effect_rem])
+                                      [precond_pos, precond_neg],
+                                      [effect_add, effect_rem])
                         loads.append(load)
             return loads
 
@@ -88,8 +84,8 @@ class AirCargoProblem(Problem):
                         effect_rem = [expr('In({}, {})'.format(cargo, plane))]
 
                         unload = Action(expr('Unload({}, {}, {})'.format(cargo, plane, airport)),
-                                       [precond_pos, precond_neg],
-                                       [effect_add, effect_rem])
+                                        [precond_pos, precond_neg],
+                                        [effect_add, effect_rem])
                         unloads.append(unload)
             return unloads
 
@@ -127,14 +123,14 @@ class AirCargoProblem(Problem):
         kb = PropKB()
         kb.tell(decode_state(state, self.state_map).pos_sentence())
         for action in self.actions_list:
-            is_possible = True
-            for clause in action.precond_pos:
-                if clause not in kb.clauses:
-                    is_possible = False
-            for clause in action.precond_neg:
-                if clause in kb.clauses:
-                    is_possible = False
-            if is_possible:
+            possible = True
+            for precond_p in action.precond_pos:
+                if precond_p not in kb.clauses:
+                    possible = False
+            for precond_n in action.precond_neg:
+                if precond_n in kb.clauses:
+                    possible = False
+            if possible:
                 possible_actions.append(action)
         return possible_actions
 
@@ -179,7 +175,6 @@ class AirCargoProblem(Problem):
         return True
 
     def h_1(self, node: Node):
-        # note that this is not a true heuristic
         h_const = 1
         return h_const
 
@@ -202,32 +197,48 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         """
-        # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
-        count = 0
-        return count
+        return sum([1 for goal in self.goal if goal not in self.actions_list])
+
 
 def item_helper(item, count):
     """
-    :param item (str): An item in the problem (Cargo, Plane, Airport)
-    :param count (int): A count of how many items
-    :return (str): The item concatenated with a count
+    :param item: A STR of an item in the problem (Cargo, Plane, Airport)
+    :param count: An INT of how many items
+    :return: A STR of the item concatenated with a count
     """
     return [item + str(i) for i in range(1,count)]
 
 
 def get_combo_helper(a, b, action, one_to_one=True):
     """
-    Return all combindation for item a and item b wrapped in the action
-    :param a (list): A list of items
-    :param b (list): A list of items
-    :param action (str): action to wrap a and b in
-    :param one_to_one (boolean): Set to returns all combination if false else returns only one to one matching
-    :return (list): A list of combinations
+    Return all combination for item a and item b wrapped in the action
+    :param a: A LIST of items
+    :param b: A LIST of items
+    :param action: A STR of an action to wrap a and b in
+    :param one_to_one: A BOOLEAN set to returns all combination if false else returns only one to one matching
+    :return : A LIST of combinations
     """
     if one_to_one:
         return [action + '(' + x + ', ' + y +')' for x in a for y in b]
     else:
         return [action + '(' + a[i] + ', ' + b[i] + ')' for i in range(len(a))]
+
+
+def get_neg_combo(cargos, planes, airports, at_planes, at_cargo):
+    """
+    Return all neg combinations for all items and their given states
+    :param cargos: A LIST of all cargos
+    :param planes: A LIST of all planes
+    :param airports: A LIST of all airports
+    :param at_planes: A LIST of all plane locations at the current state
+    :param at_cargo:  A LIST of all cargo locations at the current state
+    :return:
+    """
+    plane_cargo_neg = get_combo_helper(cargos, planes, 'In')
+    plane_airport_neg = list(set(get_combo_helper(planes, airports, 'At')).difference(at_planes))
+    cargos_airport_neg = list(set(get_combo_helper(cargos, airports, 'At')).difference(at_cargo))
+    return [expr(state) for state in plane_airport_neg + plane_cargo_neg + cargos_airport_neg]
+
 
 def air_cargo_p1() -> AirCargoProblem:
     cargos = ['C1', 'C2']
@@ -263,11 +274,7 @@ def air_cargo_p2() -> AirCargoProblem:
     at_planes = get_combo_helper(planes, airports, 'At', False)
 
     pos = [expr(state) for state in at_cargo + at_planes]
-
-    plane_cargo_neg = get_combo_helper(cargos, planes, 'In')
-    plane_airport_neg = list(set(get_combo_helper(planes, airports, 'At')).difference(at_planes))
-    cargos_airport_neg = list(set(get_combo_helper(cargos, airports, 'At')).difference(at_cargo))
-    neg = [expr(state) for state in  plane_airport_neg + plane_cargo_neg + cargos_airport_neg]
+    neg = get_neg_combo(cargos, planes, airports, at_planes, at_cargo)
 
     init = FluentState(pos, neg)
     goal = [expr(state) for state in get_combo_helper(cargos, ['JFK'] + ['SFO']*2, 'At', False)]
@@ -282,12 +289,9 @@ def air_cargo_p3() -> AirCargoProblem:
 
     at_planes = get_combo_helper(planes, airports[:2], 'At', False)
     at_cargo = get_combo_helper(cargos, airports, 'At', False)
-    pos = [expr(state) for state in at_planes + at_cargo]
 
-    plane_cargo_neg = get_combo_helper(cargos, planes, 'In')
-    plane_airport_neg = list(set(get_combo_helper(planes, airports, 'At')).difference(at_planes))
-    cargos_airport_neg = list(set(get_combo_helper(cargos, airports, 'At')).difference(at_cargo))
-    neg = [expr(state) for state in plane_airport_neg + plane_cargo_neg + cargos_airport_neg]
+    pos = [expr(state) for state in at_planes + at_cargo]
+    neg = get_neg_combo(cargos, planes, airports, at_planes, at_cargo)
 
     init = FluentState(pos, neg)
     goal = [expr(state) for state in get_combo_helper(cargos, ['JFK', 'SFO', 'JFK', 'SFO'], 'At', False)]
