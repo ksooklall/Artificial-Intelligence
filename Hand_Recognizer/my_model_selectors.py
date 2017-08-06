@@ -66,6 +66,7 @@ class SelectorBIC(ModelSelector):
 
     http://www2.imm.dtu.dk/courses/02433/doc/ch6_slides.pdf
     Bayesian information criteria: BIC = -2 * logL + p * logN
+     p - Number of parameters
     """
 
     def select(self):
@@ -145,7 +146,7 @@ class SelectorCV(ModelSelector):
 
         best_score = float('-inf')
         best_num_state = 1
-
+        iters = 1000
         for state in range(self.min_n_components, self.max_n_components + 1):
             i = 0
             score = 0
@@ -160,8 +161,8 @@ class SelectorCV(ModelSelector):
                     train_x, train_len = combine_sequences(train, word_sequences)
                     test_x, test_len = combine_sequences(test, word_sequences)
 
-                    model = GaussianHMM(n_components=state, covariance_type='diag', n_iter=n, random_state=self.random_state,
-                                        verbose=False)
+                    model = GaussianHMM(n_components=state, covariance_type='diag', n_iter=iters,
+                                        random_state=self.random_state, verbose=False)
                     model.fit(train_x, train_len)
                     score += model.score(test_x, test_len)
                     i += 1
