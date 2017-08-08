@@ -79,13 +79,14 @@ class SelectorBIC(ModelSelector):
 
         BIC_model = None
         BIC_score = float('inf')
+        N = np.sum(self.lengths)
 
         for comp in range(self.min_n_components, self.max_n_components + 1):
             try:
                 model = self.base_model(comp)
-                n_params = (comp ** 2) + 2 * len(self.X[0]) * comp
+                n_params = (comp ** 2) + 2 * len(self.X[0]) * comp - 1
                 logL = model.score(self.X, self.lengths)
-                N = np.sum(self.lengths)
+
                 current_score = -2 * logL + n_params * np.log(N)
                 if current_score < BIC_score:
                     BIC_score = current_score

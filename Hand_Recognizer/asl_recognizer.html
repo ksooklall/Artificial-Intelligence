@@ -13654,6 +13654,7 @@ Some ideas to get you started:<ul>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Normalize data using [X-min(X)] / [max(X) - min(X)] such that all values are between [0,1]</span>
+<span class="c1"># Place into a method def normalizer()</span>
 <span class="n">features_norm</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;norm-rx&#39;</span><span class="p">,</span> <span class="s1">&#39;norm-ry&#39;</span><span class="p">,</span> <span class="s1">&#39;norm-lx&#39;</span><span class="p">,</span> <span class="s1">&#39;norm-ly&#39;</span><span class="p">]</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">raw_values</span><span class="p">]</span>
 <span class="n">df</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span>
@@ -13674,13 +13675,112 @@ Some ideas to get you started:<ul>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features_polar_norm</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polar_n-rr&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_n-rtheta&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_n-lr&#39;</span><span class="p">,</span> <span class="s1">&#39;polar_n-ltheta&#39;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">features_polar</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span>
+    <span class="p">{</span><span class="n">features_polar</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">features_polar_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">features_polar</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">features_polar_norm</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">features_polar</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">features_polar_norm</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">features_polar</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">features_polar_norm</span><span class="p">[</span><span class="mi">3</span><span class="p">]})</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">features_norm</span><span class="p">)):</span>
+    <span class="n">asl</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">features_polar_norm</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">features_polar_norm</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+<span class="n">asl</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">features_polar_norm</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[15]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>polar_n-rr</th>
+      <th>polar_n-rtheta</th>
+      <th>polar_n-lr</th>
+      <th>polar_n-ltheta</th>
+    </tr>
+    <tr>
+      <th>video</th>
+      <th>frame</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">98</th>
+      <th>0</th>
+      <td>0.592485</td>
+      <td>0.490063</td>
+      <td>0.557771</td>
+      <td>0.106963</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.592485</td>
+      <td>0.490063</td>
+      <td>0.557771</td>
+      <td>0.106963</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.592485</td>
+      <td>0.490063</td>
+      <td>0.557771</td>
+      <td>0.106963</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.592485</td>
+      <td>0.490063</td>
+      <td>0.557771</td>
+      <td>0.106963</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.592485</td>
+      <td>0.490063</td>
+      <td>0.557771</td>
+      <td>0.106963</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Question 1:</strong>  What custom features did you choose for the features_custom set and why?</p>
-<p><strong>Answer 1:</strong>  I chose to add feature normalization, since a lot of model use normalization.</p>
+<p><strong>Answer 1:</strong>  I chose to add feature normalization, because normalization allows the model to train faster. The first normilization was made on the cartesian coordindates of the left and right hand. The second normalization was made on the polar coordinates since the radius and angle will have very different statistics. Normalizing the polar coordinates allows them to both be on the same scale.</p>
 
 </div>
 </div>
@@ -13699,7 +13799,7 @@ feature sets.  The test simply looks for some valid values but is not exhaustive
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
@@ -13743,7 +13843,7 @@ feature sets.  The test simply looks for some valid values but is not exhaustive
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>....
 ----------------------------------------------------------------------
-Ran 4 tests in 0.018s
+Ran 4 tests in 0.008s
 
 OK
 </pre>
@@ -13751,7 +13851,7 @@ OK
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+<div class="prompt output_prompt">Out[16]:</div>
 
 
 
@@ -13793,7 +13893,7 @@ OK
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
@@ -13848,7 +13948,7 @@ logL = 81.62828140655856
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">show_model_stats</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
@@ -13912,7 +14012,7 @@ variance =  [ 0.01  0.01  0.01  0.01]
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_testword</span> <span class="o">=</span> <span class="s1">&#39;LOVE&#39;</span>
@@ -13963,7 +14063,7 @@ logL = -1218.7784378950864
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -13976,7 +14076,7 @@ logL = -1218.7784378950864
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
@@ -14786,7 +14886,7 @@ rkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">my_model_selectors</span> <span class="k">import</span> <span class="n">SelectorConstant</span>
@@ -14830,7 +14930,7 @@ rkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">KFold</span>
@@ -14901,7 +15001,7 @@ Train fold indices:[ 0  1  2  3  4  5  6  7  8  9 10 11] Test fold indices:[12 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">words_to_train</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FISH&#39;</span><span class="p">,</span> <span class="s1">&#39;BOOK&#39;</span><span class="p">,</span> <span class="s1">&#39;VEGETABLE&#39;</span><span class="p">,</span> <span class="s1">&#39;FUTURE&#39;</span><span class="p">,</span> <span class="s1">&#39;JOHN&#39;</span><span class="p">]</span>
@@ -14915,12 +15015,12 @@ Train fold indices:[ 0  1  2  3  4  5  6  7  8  9 10 11] Test fold indices:[12 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Future implementation</span>
 <span class="n">stnd</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_training</span><span class="p">(</span><span class="n">features_stnd</span><span class="p">)</span>
-<span class="n">polar</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_training</span><span class="p">(</span><span class="n">features_polar</span><span class="p">)</span>
+<span class="n">polar</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_training</span><span class="p">(</span><span class="n">features_polar_norm</span><span class="p">)</span>
 <span class="n">norm</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_training</span><span class="p">(</span><span class="n">features_norm</span><span class="p">)</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_training</span><span class="p">(</span><span class="n">features_delta</span><span class="p">)</span>
 
@@ -14937,7 +15037,7 @@ Train fold indices:[ 0  1  2  3  4  5  6  7  8  9 10 11] Test fold indices:[12 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">my_model_selectors</span> <span class="k">import</span> <span class="n">SelectorCV</span>
@@ -14967,11 +15067,11 @@ Train fold indices:[ 0  1  2  3  4  5  6  7  8  9 10 11] Test fold indices:[12 1
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Training complete for FISH with 2 states with time 0.3554569990001255 seconds
-Training complete for BOOK with 10 states with time 4.5421108140003525 seconds
-Training complete for VEGETABLE with 4 states with time 1.867168182000114 seconds
-Training complete for FUTURE with 8 states with time 4.301552175999859 seconds
-Training complete for JOHN with 13 states with time 41.263775062999684 seconds
+<pre>Training complete for FISH with 2 states with time 0.31196320899971397 seconds
+Training complete for BOOK with 10 states with time 3.7727952919999552 seconds
+Training complete for VEGETABLE with 4 states with time 1.5837972949998402 seconds
+Training complete for FUTURE with 8 states with time 3.701327622000008 seconds
+Training complete for JOHN with 13 states with time 40.69033554000043 seconds
 </pre>
 </div>
 </div>
@@ -14982,7 +15082,7 @@ Training complete for JOHN with 13 states with time 41.263775062999684 seconds
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">my_model_selectors</span> <span class="k">import</span> <span class="n">SelectorBIC</span>
@@ -15011,11 +15111,11 @@ Training complete for JOHN with 13 states with time 41.263775062999684 seconds
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Training complete for FISH with 2 states with time 0.3252872279999792 seconds
-Training complete for BOOK with 5 states with time 1.9687705440001082 seconds
-Training complete for VEGETABLE with 5 states with time 0.7882508729999245 seconds
-Training complete for FUTURE with 7 states with time 2.2849125029997595 seconds
-Training complete for JOHN with 15 states with time 19.356503133999922 seconds
+<pre>Training complete for FISH with 2 states with time 0.34354942500021934 seconds
+Training complete for BOOK with 5 states with time 2.0706937600002675 seconds
+Training complete for VEGETABLE with 5 states with time 0.8848589889998948 seconds
+Training complete for FUTURE with 7 states with time 2.5369632299998557 seconds
+Training complete for JOHN with 15 states with time 20.319774637000137 seconds
 </pre>
 </div>
 </div>
@@ -15026,11 +15126,10 @@ Training complete for JOHN with 15 states with time 19.356503133999922 seconds
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Implement SelectorDIC in module my_model_selectors.py</span>
-<span class="kn">from</span> <span class="nn">my_model_selectors</span> <span class="k">import</span> <span class="n">SelectorDIC</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">my_model_selectors</span> <span class="k">import</span> <span class="n">SelectorDIC</span>
 
 <span class="n">Xlengths</span> <span class="o">=</span> <span class="n">training_dict</span><span class="p">[</span><span class="s1">&#39;polar&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words_to_train</span><span class="p">:</span>
@@ -15056,11 +15155,11 @@ Training complete for JOHN with 15 states with time 19.356503133999922 seconds
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Training complete for FISH with 2 states with time 3.739630041000055 seconds
-Training complete for BOOK with 13 states with time 4.637801480000235 seconds
-Training complete for VEGETABLE with 12 states with time 3.6767919499998243 seconds
-Training complete for FUTURE with 14 states with time 4.635469689000274 seconds
-Training complete for JOHN with 15 states with time 29.73982418000014 seconds
+<pre>Training complete for FISH with 3 states with time 2.327009954999994 seconds
+Training complete for BOOK with 9 states with time 3.7882873650000874 seconds
+Training complete for VEGETABLE with 3 states with time 3.4862867290003123 seconds
+Training complete for FUTURE with 10 states with time 5.12363688700043 seconds
+Training complete for JOHN with 15 states with time 18.772594040000058 seconds
 </pre>
 </div>
 </div>
@@ -15076,7 +15175,7 @@ Training complete for JOHN with 15 states with time 29.73982418000014 seconds
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Question 2:</strong>  Compare and contrast the possible advantages and disadvantages of the various model selectors implemented.</p>
 <p><strong>Answer 2:</strong> The cross validation (CV) is at a disadvantage here given the amount of data. CV is preformed by splitting the data set and into training and testing thus a considerable amount of data is needed for CV to preform well. The pro of CV is the fact that it will make the model more flexible on new data, hence not overfitting.</p>
-<p>Bayesian information criteria (BIC) calculates the score of a model in a simple non-linear function. BIC uses all the data to determine the score and has a penalty term to punish models that have more complexity.  BIC is susceptible to overfitting. Thus models that score high on BIC will run fast; however the speed comes at  the cost of accuracy.</p>
+<p>Bayesian information criteria (BIC) calculates the score of a model in a simple non-linear function. BIC uses all the data to determine the score and has a penalty term to punish models that have more complexity.  By reducing complexity BIC aims to prevent overfitting. Thus models that score high on BIC will run fast; however the speed comes at  the cost of accuracy.</p>
 <p>Discriminative Information Criterion (DIC) also uses all of the available data for training and has the same overfitting issue as BIC. DIC tries to find a model for each word with respect to the other words in the training set. Each word is quantified in a unique way to its counter part.</p>
 
 </div>
@@ -15095,7 +15194,7 @@ Training complete for JOHN with 15 states with time 29.73982418000014 seconds
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">asl_test_model_selectors</span> <span class="k">import</span> <span class="n">TestSelectors</span>
@@ -15117,7 +15216,7 @@ Training complete for JOHN with 15 states with time 29.73982418000014 seconds
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>....
 ----------------------------------------------------------------------
-Ran 4 tests in 45.718s
+Ran 4 tests in 46.734s
 
 OK
 </pre>
@@ -15125,7 +15224,7 @@ OK
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[28]:</div>
+<div class="prompt output_prompt">Out[29]:</div>
 
 
 
@@ -15153,7 +15252,7 @@ OK
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># autoreload for automatically reloading changes made in my_model_selectors and my_recognizer</span>
@@ -15215,7 +15314,7 @@ OK
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_set</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_test</span><span class="p">(</span><span class="n">features_ground</span><span class="p">)</span>
@@ -15259,7 +15358,7 @@ Number of test set sentences: 40
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO implement the recognize method in my_recognizer</span>
@@ -15274,11 +15373,11 @@ Number of test set sentences: 40
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO Choose a feature set and model selector</span>
-<span class="n">features</span> <span class="o">=</span> <span class="n">features_polar</span> <span class="c1"># change as needed</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_polar_norm</span> <span class="c1"># change as needed</span>
 <span class="n">model_selector</span> <span class="o">=</span> <span class="n">SelectorBIC</span> <span class="c1"># change as needed</span>
 
 <span class="c1"># TODO Recognize the test set and display the result with the show_errors method</span>
@@ -15301,50 +15400,50 @@ Number of test set sentences: 40
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-**** WER = 0.5449438202247191
-Total correct: 81 out of 178
+**** WER = 0.5393258426966292
+Total correct: 82 out of 178
 Video  Recognized                                                    Correct
 =====================================================================================================
-    2: *GO WRITE *NEW                                                JOHN WRITE HOMEWORK
-    7: JOHN *PEOPLE GO *ARRIVE                                       JOHN CAN GO CAN
+    2: *GO WRITE HOMEWORK                                            JOHN WRITE HOMEWORK
+    7: JOHN *PEOPLE *MARY *TOY                                       JOHN CAN GO CAN
    12: JOHN *WHAT *GO1 CAN                                           JOHN CAN GO CAN
-   21: JOHN *NEW WONT *NOT *GIVE1 *TEACHER *FUTURE *WHO              JOHN FISH WONT EAT BUT CAN EAT CHICKEN
-   25: JOHN LIKE *LOVE *WHO IX                                       JOHN LIKE IX IX IX
-   28: JOHN *WHO *FUTURE *WHO IX                                     JOHN LIKE IX IX IX
-   30: JOHN LIKE *MARY *MARY *MARY                                   JOHN LIKE IX IX IX
+   21: JOHN *HOMEWORK WONT *PREFER BUT *PARTY *CHICKEN CHICKEN       JOHN FISH WONT EAT BUT CAN EAT CHICKEN
+   25: *ANN *WHO *ANN *WHO *ANN                                      JOHN LIKE IX IX IX
+   28: JOHN *WHO *ANN *WHO *NOT                                      JOHN LIKE IX IX IX
+   30: JOHN *MARY *MARY *MARY *MARY                                  JOHN LIKE IX IX IX
    36: *VISIT VEGETABLE *GIRL *GIVE *MARY *MARY                      MARY VEGETABLE KNOW IX LIKE CORN1
-   40: JOHN *VISIT *FUTURE1 *JOHN *MARY                              JOHN IX THINK MARY LOVE
-   43: JOHN *FUTURE BUY HOUSE                                        JOHN MUST BUY HOUSE
-   50: *JOHN *SEE *STUDENT CAR *JOHN                                 FUTURE JOHN BUY CAR SHOULD
-   54: JOHN SHOULD *WHO BUY HOUSE                                    JOHN SHOULD NOT BUY HOUSE
-   57: *MARY *VISIT VISIT MARY                                       JOHN DECIDE VISIT MARY
-   67: *SHOULD FUTURE *MARY BUY HOUSE                                JOHN FUTURE NOT BUY HOUSE
-   71: JOHN *FINISH *GIVE1 MARY                                      JOHN WILL VISIT MARY
-   74: *IX *VISIT *GIVE MARY                                         JOHN NOT VISIT MARY
-   77: *JOHN BLAME *LOVE                                             ANN BLAME MARY
-   84: *HOMEWORK *GIVE1 *GIVE1 BOOK                                  IX-1P FIND SOMETHING-ONE BOOK
-   89: *GIVE *GIVE *WOMAN *WOMAN IX *ARRIVE *BREAK-DOWN              JOHN IX GIVE MAN IX NEW COAT
-   90: JOHN *HAVE IX SOMETHING-ONE *VISIT *BREAK-DOWN                JOHN GIVE IX SOMETHING-ONE WOMAN BOOK
-   92: JOHN *WOMAN IX *WOMAN WOMAN BOOK                              JOHN GIVE IX SOMETHING-ONE WOMAN BOOK
-  100: POSS NEW CAR BREAK-DOWN                                       POSS NEW CAR BREAK-DOWN
+   40: JOHN *VISIT *CORN *JOHN *MARY                                 JOHN IX THINK MARY LOVE
+   43: JOHN *PAST BUY HOUSE                                          JOHN MUST BUY HOUSE
+   50: *FRANK *SEE *WRITE CAR *JOHN                                  FUTURE JOHN BUY CAR SHOULD
+   54: JOHN *FRANK *THINK BUY HOUSE                                  JOHN SHOULD NOT BUY HOUSE
+   57: *MARY *PREFER VISIT *GIVE2                                    JOHN DECIDE VISIT MARY
+   67: JOHN *KNOW *WHO BUY HOUSE                                     JOHN FUTURE NOT BUY HOUSE
+   71: JOHN *FUTURE *GO MARY                                         JOHN WILL VISIT MARY
+   74: *IX *VEGETABLE *GIVE2 MARY                                    JOHN NOT VISIT MARY
+   77: *JOHN BLAME MARY                                              ANN BLAME MARY
+   84: *ANN *STUDENT *HOMEWORK BOOK                                  IX-1P FIND SOMETHING-ONE BOOK
+   89: *THINK *WILL *MAN *IX IX *ARRIVE *BREAK-DOWN                  JOHN IX GIVE MAN IX NEW COAT
+   90: *SELF *GIVE1 IX SOMETHING-ONE WOMAN *COAT                     JOHN GIVE IX SOMETHING-ONE WOMAN BOOK
+   92: JOHN *MAN *SOMETHING-ONE SOMETHING-ONE WOMAN BOOK             JOHN GIVE IX SOMETHING-ONE WOMAN BOOK
+  100: POSS NEW *BUT BREAK-DOWN                                      POSS NEW CAR BREAK-DOWN
   105: JOHN *VEGETABLE                                               JOHN LEG
-  107: JOHN *IX *HAVE *GO *JANA                                      JOHN POSS FRIEND HAVE CANDY
-  108: *JOHN *HOMEWORK                                               WOMAN ARRIVE
-  113: IX CAR *IX *IX *BUY1                                          IX CAR BLUE SUE BUY
-  119: *PREFER *BUY1 *CAR CAR *GO                                    SUE BUY IX CAR BLUE
+  107: JOHN POSS FRIEND *MARY CANDY                                  JOHN POSS FRIEND HAVE CANDY
+  108: *THINK *POTATO                                                WOMAN ARRIVE
+  113: IX CAR BLUE *TOY1 *BUY1                                       IX CAR BLUE SUE BUY
+  119: *PREFER *BUY1 *BLUE *TOY *JANA                                SUE BUY IX CAR BLUE
   122: JOHN *GIVE1 BOOK                                              JOHN READ BOOK
-  139: JOHN *BUY1 WHAT *BLAME *CHOCOLATE                             JOHN BUY WHAT YESTERDAY BOOK
-  142: JOHN BUY YESTERDAY WHAT BOOK                                  JOHN BUY YESTERDAY WHAT BOOK
+  139: JOHN *BUY1 WHAT YESTERDAY BOOK                                JOHN BUY WHAT YESTERDAY BOOK
+  142: JOHN *NEW YESTERDAY WHAT BOOK                                 JOHN BUY YESTERDAY WHAT BOOK
   158: LOVE JOHN WHO                                                 LOVE JOHN WHO
-  167: JOHN IX *VISIT LOVE MARY                                      JOHN IX SAY LOVE MARY
-  171: JOHN *IX BLAME                                                JOHN MARY BLAME
-  174: *JOHN *GIVE3 GIVE1 *YESTERDAY *JOHN                           PEOPLE GROUP GIVE1 JANA TOY
-  181: *EAT ARRIVE                                                   JOHN ARRIVE
-  184: ALL BOY *GIVE1 TEACHER APPLE                                  ALL BOY GIVE TEACHER APPLE
-  189: *MARY *VISIT *VISIT BOX                                       JOHN GIVE GIRL BOX
-  193: JOHN *POSS *VISIT BOX                                         JOHN GIVE GIRL BOX
-  199: *HOMEWORK *VIDEOTAPE *JOHN                                    LIKE CHOCOLATE WHO
-  201: JOHN *MAN *MAN *LIKE BUY HOUSE                                JOHN TELL MARY IX-1P BUY HOUSE
+  167: JOHN *TOY1 *SAY-1P LOVE MARY                                  JOHN IX SAY LOVE MARY
+  171: *MARY MARY BLAME                                              JOHN MARY BLAME
+  174: *LIVE GROUP GIVE1 *CORN TOY                                   PEOPLE GROUP GIVE1 JANA TOY
+  181: *SUE ARRIVE                                                   JOHN ARRIVE
+  184: ALL BOY *GIVE1 TEACHER *GIRL                                  ALL BOY GIVE TEACHER APPLE
+  189: JOHN *SELF *FUTURE1 *BUY1                                     JOHN GIVE GIRL BOX
+  193: JOHN *SELF *FUTURE1 BOX                                       JOHN GIVE GIRL BOX
+  199: *ANN CHOCOLATE WHO                                            LIKE CHOCOLATE WHO
+  201: JOHN *MARY *LOVE *WOMAN BUY HOUSE                             JOHN TELL MARY IX-1P BUY HOUSE
 </pre>
 </div>
 </div>
@@ -15355,7 +15454,7 @@ Video  Recognized                                                    Correct
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO Choose a feature set and model selector</span>
@@ -15436,7 +15535,7 @@ Video  Recognized                                                    Correct
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO Choose a feature set and model selector</span>
@@ -15515,13 +15614,94 @@ Video  Recognized                                                    Correct
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO Choose a feature set and model selector</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_polar_norm</span>
+<span class="n">model_selector</span> <span class="o">=</span> <span class="n">SelectorDIC</span>
+
+<span class="c1"># TODO Recognize the test set and display the result with the show_errors method</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">train_all_words</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model_selector</span><span class="p">)</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">asl</span><span class="o">.</span><span class="n">build_test</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="n">prob</span><span class="p">,</span> <span class="n">guesses</span> <span class="o">=</span> <span class="n">recognize</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)</span>
+<span class="n">show_errors</span><span class="p">(</span><span class="n">guesses</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+**** WER = 0.47752808988764045
+Total correct: 93 out of 178
+Video  Recognized                                                    Correct
+=====================================================================================================
+    2: *HIT WRITE HOMEWORK                                           JOHN WRITE HOMEWORK
+    7: JOHN *PEOPLE GO *TOY                                          JOHN CAN GO CAN
+   12: JOHN *WHAT *GO1 CAN                                           JOHN CAN GO CAN
+   21: JOHN *HOMEWORK WONT *FUTURE BUT CAN *CHICKEN CHICKEN          JOHN FISH WONT EAT BUT CAN EAT CHICKEN
+   25: *ANN *TELL *THROW *WHO *THROW                                 JOHN LIKE IX IX IX
+   28: JOHN *WHO *ANN *WHO *NOT                                      JOHN LIKE IX IX IX
+   30: JOHN *MARY *MARY *MARY *MARY                                  JOHN LIKE IX IX IX
+   36: *BILL VEGETABLE *GIRL *GIVE *MARY *MARY                       MARY VEGETABLE KNOW IX LIKE CORN1
+   40: JOHN *GIVE *CORN MARY *MARY                                   JOHN IX THINK MARY LOVE
+   43: JOHN *PAST BUY HOUSE                                          JOHN MUST BUY HOUSE
+   50: *FRANK *FUTURE BUY CAR *HOMEWORK                              FUTURE JOHN BUY CAR SHOULD
+   54: JOHN *FRANK *THINK BUY HOUSE                                  JOHN SHOULD NOT BUY HOUSE
+   57: JOHN *PREFER VISIT *GIVE2                                     JOHN DECIDE VISIT MARY
+   67: JOHN FUTURE *WHO BUY HOUSE                                    JOHN FUTURE NOT BUY HOUSE
+   71: JOHN WILL VISIT MARY                                          JOHN WILL VISIT MARY
+   74: *IX *VEGETABLE VISIT MARY                                     JOHN NOT VISIT MARY
+   77: *JOHN BLAME MARY                                              ANN BLAME MARY
+   84: *FIND *STUDENT *VISIT *VIDEOTAPE                              IX-1P FIND SOMETHING-ONE BOOK
+   89: *FUTURE *WILL GIVE *IX IX NEW *BOOK                           JOHN IX GIVE MAN IX NEW COAT
+   90: *SELF *GIVE1 IX SOMETHING-ONE WOMAN *ARRIVE                   JOHN GIVE IX SOMETHING-ONE WOMAN BOOK
+   92: JOHN *MAN *SOMETHING-ONE SOMETHING-ONE WOMAN BOOK             JOHN GIVE IX SOMETHING-ONE WOMAN BOOK
+  100: POSS NEW CAR BREAK-DOWN                                       POSS NEW CAR BREAK-DOWN
+  105: JOHN *VEGETABLE                                               JOHN LEG
+  107: JOHN POSS FRIEND *MARY CANDY                                  JOHN POSS FRIEND HAVE CANDY
+  108: *THINK *BOOK                                                  WOMAN ARRIVE
+  113: IX CAR *IX *TOY1 *BUY1                                        IX CAR BLUE SUE BUY
+  119: *PREFER *BUY1 IX *TOY *JANA                                   SUE BUY IX CAR BLUE
+  122: JOHN READ BOOK                                                JOHN READ BOOK
+  139: JOHN *BUY1 WHAT YESTERDAY BOOK                                JOHN BUY WHAT YESTERDAY BOOK
+  142: JOHN *STUDENT YESTERDAY WHAT BOOK                             JOHN BUY YESTERDAY WHAT BOOK
+  158: LOVE JOHN WHO                                                 LOVE JOHN WHO
+  167: JOHN *TOY1 *JANA LOVE MARY                                    JOHN IX SAY LOVE MARY
+  171: *MARY MARY BLAME                                              JOHN MARY BLAME
+  174: *LIVE GROUP GIVE1 *CORN TOY                                   PEOPLE GROUP GIVE1 JANA TOY
+  181: *SUE ARRIVE                                                   JOHN ARRIVE
+  184: ALL BOY *GIVE1 TEACHER *GIRL                                  ALL BOY GIVE TEACHER APPLE
+  189: *MARY *SELF *FUTURE1 *BUY1                                    JOHN GIVE GIRL BOX
+  193: JOHN *SELF *FUTURE1 BOX                                       JOHN GIVE GIRL BOX
+  199: *ANN CHOCOLATE WHO                                            LIKE CHOCOLATE WHO
+  201: JOHN *MARY *WOMAN *WOMAN BUY HOUSE                            JOHN TELL MARY IX-1P BUY HOUSE
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Question 3:</strong>  Summarize the error results from three combinations of features and model selectors.  What was the "best" combination and why?  What additional information might we use to improve our WER?  For more insight on improving WER, take a look at the introduction to Part 4.</p>
-<p><strong>Answer 3:</strong> From the tests above it can be seen that the best combination is features_polar with BIC. It should be noted that this combination is the best so far, better models can be produced with further research. The basic way to improve the model is to have more data. A more complex approch would be to add more features and mix and match the current features.</p>
+<p><strong>Answer 3:</strong> The best combination is features_polar_norm with DIC giving a score. The model was ran aganist features_polar without normalization and the WER was higher. It should be noted that this combination is the best so far; however better models can be produced with further research. The basic way to improve the model is to have more data. A more complex approch would be to add more features and mix and match the current features.</p>
 
 </div>
 </div>
@@ -15539,7 +15719,7 @@ Video  Recognized                                                    Correct
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">asl_test_recognizer</span> <span class="k">import</span> <span class="n">TestRecognize</span>
@@ -15561,7 +15741,7 @@ Video  Recognized                                                    Correct
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>..
 ----------------------------------------------------------------------
-Ran 2 tests in 24.341s
+Ran 2 tests in 26.362s
 
 OK
 </pre>
@@ -15569,7 +15749,7 @@ OK
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[35]:</div>
+<div class="prompt output_prompt">Out[36]:</div>
 
 
 
@@ -15603,7 +15783,7 @@ Good luck!  Share your results with the class!</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create a DataFrame of log likelihoods for the test word items</span>
@@ -15620,7 +15800,7 @@ Good luck!  Share your results with the class!</p>
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[36]:</div>
+<div class="prompt output_prompt">Out[37]:</div>
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -15655,123 +15835,123 @@ Good luck!  Share your results with the class!</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>-2484.074988</td>
-      <td>-41956.468452</td>
-      <td>-1652.469673</td>
-      <td>-228.912088</td>
-      <td>-1914.870126</td>
-      <td>-159.314704</td>
-      <td>-2787.022892</td>
-      <td>-1015.916185</td>
-      <td>-2424.605579</td>
-      <td>-341.326030</td>
+      <td>-427.265216</td>
+      <td>60.855960</td>
+      <td>-60.043712</td>
+      <td>28.328428</td>
+      <td>-69.737264</td>
+      <td>16.227199</td>
+      <td>-114.647372</td>
+      <td>-435.534046</td>
+      <td>-48.139049</td>
+      <td>-88.536813</td>
       <td>...</td>
-      <td>-552.266113</td>
-      <td>-142.780163</td>
-      <td>-761.870757</td>
-      <td>-281.525791</td>
-      <td>-184.447653</td>
-      <td>-1173.710978</td>
-      <td>-738.568305</td>
-      <td>-326.867230</td>
-      <td>-206.481946</td>
-      <td>-189.477866</td>
+      <td>-113.423580</td>
+      <td>47.356802</td>
+      <td>-52.544239</td>
+      <td>-84.891030</td>
+      <td>42.251060</td>
+      <td>-14.282839</td>
+      <td>-97.735102</td>
+      <td>-5.741563</td>
+      <td>49.629823</td>
+      <td>14.268172</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>-6939.702319</td>
-      <td>-36160.004699</td>
-      <td>-2486.614481</td>
-      <td>-108.022948</td>
-      <td>-16939.812725</td>
-      <td>-126.607267</td>
-      <td>-2762.903680</td>
-      <td>-114.074038</td>
-      <td>-1216.645594</td>
-      <td>-415.721778</td>
+      <td>-1451.400952</td>
+      <td>-784.061017</td>
+      <td>-1506.385696</td>
+      <td>64.552455</td>
+      <td>-948.554305</td>
+      <td>48.069869</td>
+      <td>-203.712097</td>
+      <td>75.791853</td>
+      <td>3.404890</td>
+      <td>-209.781529</td>
       <td>...</td>
-      <td>-112.303346</td>
-      <td>-278.727555</td>
-      <td>-784.880415</td>
-      <td>-380.672400</td>
-      <td>-111.169614</td>
-      <td>-4653.723059</td>
-      <td>-622.966748</td>
-      <td>-328.834602</td>
-      <td>-61.850441</td>
-      <td>-253.747237</td>
+      <td>76.687187</td>
+      <td>-41.865239</td>
+      <td>-2.904167</td>
+      <td>-176.480224</td>
+      <td>43.212471</td>
+      <td>-659.048391</td>
+      <td>-98.516992</td>
+      <td>-27.738499</td>
+      <td>119.111617</td>
+      <td>-73.288603</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>-9803.604767</td>
-      <td>-154469.113258</td>
-      <td>-4669.737685</td>
-      <td>-267.870878</td>
-      <td>-25629.382095</td>
-      <td>-282.328253</td>
-      <td>-7176.192625</td>
-      <td>-836.854608</td>
-      <td>-3107.285278</td>
-      <td>-748.764086</td>
+      <td>-2029.335173</td>
+      <td>-830.003079</td>
+      <td>-2529.133980</td>
+      <td>65.911074</td>
+      <td>-1125.386327</td>
+      <td>43.293152</td>
+      <td>-363.298001</td>
+      <td>-269.928020</td>
+      <td>32.561309</td>
+      <td>-312.817902</td>
       <td>...</td>
-      <td>-528.898610</td>
-      <td>-493.033255</td>
-      <td>-1121.653348</td>
-      <td>-767.713670</td>
-      <td>-483.820318</td>
-      <td>-7148.515215</td>
-      <td>-1652.088447</td>
-      <td>-643.365494</td>
-      <td>-603.370964</td>
-      <td>-547.237434</td>
+      <td>59.009194</td>
+      <td>-77.605354</td>
+      <td>26.154792</td>
+      <td>-357.469372</td>
+      <td>7.143990</td>
+      <td>-795.821064</td>
+      <td>-253.483665</td>
+      <td>-26.765867</td>
+      <td>103.561675</td>
+      <td>-142.277869</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>-937.270846</td>
-      <td>-466692.858336</td>
-      <td>-426.064992</td>
-      <td>-295.943658</td>
-      <td>-526.346339</td>
-      <td>-215.328547</td>
-      <td>-562.274277</td>
-      <td>-1114.689255</td>
-      <td>-2381.407150</td>
-      <td>-551.295410</td>
+      <td>42.056279</td>
+      <td>-533.465917</td>
+      <td>-57.359094</td>
+      <td>-76.492025</td>
+      <td>108.963639</td>
+      <td>13.504245</td>
+      <td>71.954243</td>
+      <td>-474.436290</td>
+      <td>-298.907664</td>
+      <td>-207.396896</td>
       <td>...</td>
-      <td>-1530.448899</td>
-      <td>-117.942820</td>
-      <td>-5543.178867</td>
-      <td>-722.136840</td>
-      <td>-563.122959</td>
-      <td>-11768.135900</td>
-      <td>-194.551810</td>
-      <td>-117.215175</td>
-      <td>-2051.958947</td>
-      <td>-370.290973</td>
+      <td>-448.975100</td>
+      <td>108.899494</td>
+      <td>-864.636751</td>
+      <td>79.034342</td>
+      <td>-115.511567</td>
+      <td>-108.640502</td>
+      <td>115.010009</td>
+      <td>127.169647</td>
+      <td>-410.780196</td>
+      <td>-141.008807</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>-1352.262626</td>
-      <td>-227504.583968</td>
-      <td>-588.785641</td>
-      <td>-59.533034</td>
-      <td>-2726.599622</td>
-      <td>-54.556267</td>
-      <td>-140.806752</td>
-      <td>-160.733106</td>
-      <td>-317.665828</td>
-      <td>-43.947991</td>
+      <td>-286.086492</td>
+      <td>-130.514594</td>
+      <td>-313.884255</td>
+      <td>14.231529</td>
+      <td>-219.247597</td>
+      <td>22.083343</td>
+      <td>11.183612</td>
+      <td>-5.671661</td>
+      <td>22.230790</td>
+      <td>31.330757</td>
       <td>...</td>
-      <td>-136.120089</td>
-      <td>-50.432375</td>
-      <td>-511.502576</td>
-      <td>-50.702905</td>
-      <td>-208.319377</td>
-      <td>-5409.605656</td>
-      <td>-194.677316</td>
-      <td>-336.039267</td>
-      <td>-775.888802</td>
-      <td>-185.611454</td>
+      <td>-21.512775</td>
+      <td>25.590866</td>
+      <td>-20.312437</td>
+      <td>26.575994</td>
+      <td>-127.163319</td>
+      <td>-149.509867</td>
+      <td>-21.426340</td>
+      <td>-92.455810</td>
+      <td>-64.649195</td>
+      <td>-38.127245</td>
     </tr>
   </tbody>
 </table>
