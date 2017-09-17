@@ -122,3 +122,11 @@ $RECYCLE.BIN/
 
 # KDE directory preferences
 .directory
+
+# Data sets
+Term_2/dog-projects/lfw/*
+Term_2/fog-project/dogImages/*
+
+
+# Trained models
+model.weights.*
