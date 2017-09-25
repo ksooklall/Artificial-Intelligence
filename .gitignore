@@ -124,8 +124,8 @@ $RECYCLE.BIN/
 .directory
 
 # Data sets
-Term_2/dog-projects/lfw/
-Term_2/fog-project/dogImages/
+Term_2/dog-project/lfw/
+Term_2/dog-project/dogImages/
 
 # Trained models
-model.weights
+Term_2/dog-project/saved_models/
