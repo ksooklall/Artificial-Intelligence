@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 ###Python###
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+=======
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+>>>>>>> 56c0bcf1badd5af3f158ea7449a82be626d4f7fb
 
 # C extensions
 *.so
 
+<<<<<<< HEAD
 # Distribution / packaging
 .Python
 env/
@@ -129,3 +137,15 @@ Term_2/dog-project/dogImages/
 
 # Trained models
 Term_2/dog-project/saved_models/
+=======
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+>>>>>>> 56c0bcf1badd5af3f158ea7449a82be626d4f7fb
