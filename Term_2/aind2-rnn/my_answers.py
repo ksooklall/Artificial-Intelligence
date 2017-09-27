@@ -28,7 +28,9 @@ def window_transform_series(series, window_size):
 # TODO: build an RNN to perform regression on our time series input/output data
 def build_part1_RNN(window_size):
     model = Sequential()
-    model.add(LSTM())
+    model.add(LSTM(5, input_shape=(window_size, 1)))
+    model.add(Dense(1))
+    return model
 
 ### TODO: return the text input with only ascii lowercase and the punctuation given below included.
 def cleaned_text(text):
@@ -46,4 +48,8 @@ def window_transform_text(text, window_size, step_size):
 # TODO build the required RNN model: 
 # a single LSTM hidden layer with softmax activation, categorical_crossentropy loss 
 def build_part2_RNN(window_size, num_chars):
-    pass
+    model = Sequential()
+    model.add(LSTM(5, input_shape=(window_size,num_chars), activation='sigmoid'))
+    model.add(Dense(1))
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    return model
