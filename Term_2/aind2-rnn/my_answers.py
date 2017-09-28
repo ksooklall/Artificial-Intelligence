@@ -33,23 +33,43 @@ def build_part1_RNN(window_size):
     return model
 
 ### TODO: return the text input with only ascii lowercase and the punctuation given below included.
-def cleaned_text(text):
-    punctuation = ['!', ',', '.', ':', ';', '?']
-    return text.lower()
+def cleaned_text(text, return_non_ascii=True):
+    """
+    Cleans text by removing all non ascii_lowecase elements.
+
+    ascii_lowercase elements: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                               'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    :param text: Input string to be cleaned
+    :return: (str) text only containing ascii elements
+    """
+    punctuation = {'!', ',', '.', ':', ';', '?'}
+    ascii_lower = {chr(i): i  for i in range(97, 123)}
+    for i in punctuation:
+        ascii_lower[i] = None
+
+    raw_text = text
+    text = text.lower().strip()
+    text = ''.join([i if i in ascii_lower else ' ' for i in text])
+    return (text, set(raw_text).difference(set(text))) if return_non_ascii else text
 
 ### TODO: fill out the function below that transforms the input text and window-size into a set of input/output pairs for use with our RNN model
 def window_transform_text(text, window_size, step_size):
     # containers for input/output pairs
     inputs = []
     outputs = []
+    for i in range(len(text)//step_size - window_size):
+        start = i * step_size
+        end = start + window_size
 
+        inputs.append(text[start:end])
+        outputs.append(text[end])
     return inputs,outputs
 
 # TODO build the required RNN model: 
 # a single LSTM hidden layer with softmax activation, categorical_crossentropy loss 
 def build_part2_RNN(window_size, num_chars):
     model = Sequential()
-    model.add(LSTM(5, input_shape=(window_size,num_chars), activation='sigmoid'))
-    model.add(Dense(1))
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.add(LSTM(200, input_shape=(window_size, num_chars)))
+    model.add(Dense(num_chars, activation='linear'))
+    model.add(Dense(num_chars, activation='softmax'))
     return model
