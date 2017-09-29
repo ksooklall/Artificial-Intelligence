@@ -1,9 +1,8 @@
 import numpy as np
 
-from keras.models import Sequential
-from keras.layers import Dense
 from keras.layers import LSTM
-import keras
+from keras.models import Sequential
+from keras.layers import Dense, Activation
 
 
 # TODO: fill out the function below that transforms the input series 
@@ -13,7 +12,6 @@ def window_transform_series(series, window_size):
     X = []
     y = []
 
-    #import pdb; pdb.set_trace()
     for i in range(len(series) - window_size):
         X.append(series[i:i+window_size])
         y.append(series[i + window_size])
@@ -33,7 +31,7 @@ def build_part1_RNN(window_size):
     return model
 
 ### TODO: return the text input with only ascii lowercase and the punctuation given below included.
-def cleaned_text(text, return_non_ascii=True):
+def cleaned_text(text):
     """
     Cleans text by removing all non ascii_lowecase elements.
 
@@ -47,10 +45,7 @@ def cleaned_text(text, return_non_ascii=True):
     for i in punctuation:
         ascii_lower[i] = None
 
-    raw_text = text
-    text = text.lower().strip()
-    text = ''.join([i if i in ascii_lower else ' ' for i in text])
-    return (text, set(raw_text).difference(set(text))) if return_non_ascii else text
+    return ''.join([i if i in ascii_lower else ' ' for i in text.lower().strip()])
 
 ### TODO: fill out the function below that transforms the input text and window-size into a set of input/output pairs for use with our RNN model
 def window_transform_text(text, window_size, step_size):
@@ -71,5 +66,5 @@ def build_part2_RNN(window_size, num_chars):
     model = Sequential()
     model.add(LSTM(200, input_shape=(window_size, num_chars)))
     model.add(Dense(num_chars, activation='linear'))
-    model.add(Dense(num_chars, activation='softmax'))
+    model.add(Activation('softmax'))
     return model
