@@ -52,12 +52,12 @@ def window_transform_text(text, window_size, step_size):
     # containers for input/output pairs
     inputs = []
     outputs = []
-    for i in range(len(text)//step_size - window_size):
-        start = i * step_size
-        end = start + window_size
+    for i in range(0, (len(text)- window_size), step_size):
+        end = i + window_size
 
-        inputs.append(text[start:end])
+        inputs.append(text[i:end])
         outputs.append(text[end])
+
     return inputs,outputs
 
 # TODO build the required RNN model: 
