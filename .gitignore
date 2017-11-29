@@ -1,20 +1,13 @@
-<<<<<<< HEAD
 ###Python###
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-=======
-# Byte-compiled / optimized / DLL files
+#  Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
->>>>>>> 56c0bcf1badd5af3f158ea7449a82be626d4f7fb
 
 # C extensions
 *.so
 
-<<<<<<< HEAD
 # Distribution / packaging
 .Python
 env/
@@ -134,10 +127,11 @@ $RECYCLE.BIN/
 # Data sets
 Term_2/dog-project/lfw/
 Term_2/dog-project/dogImages/
+Term_2/Part_2/AIND-CV-FacialKeypoints/data/
 
 # Trained models
 Term_2/dog-project/saved_models/
-=======
+
 # Jupyter Notebook
 .ipynb_checkpoints/
 
@@ -148,4 +142,3 @@ Term_2/dog-project/saved_models/
 .venv
 venv/
 ENV/
->>>>>>> 56c0bcf1badd5af3f158ea7449a82be626d4f7fb
