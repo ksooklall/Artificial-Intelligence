@@ -128,6 +128,8 @@ $RECYCLE.BIN/
 Term_2/dog-project/lfw/
 Term_2/dog-project/dogImages/
 Term_2/Part_2/AIND-CV-FacialKeypoints/data/
+Term_2/Part_2/AIND-CV-FacialKeypoints/my_model.h5
+Term_2/Part_2/AIND-CV-FacialKeypoints/model.weights.hdf5
 
 # Trained models
 Term_2/dog-project/saved_models/
